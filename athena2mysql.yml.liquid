@@ -1,0 +1,29 @@
+in:
+  type: athena
+  database: {{ env.ATHENA_DATABASE }}
+  athena_url: jdbc:awsathena://athena.ap-northeast-1.amazonaws.com:443
+  s3_staging_dir: {{ env.ATHENA_DIR }}
+  access_key: {{ env.ATHENA_AWS_ACCESS_KEY }}
+  secret_key: {{ env.ATHENA_AWS_SECRET_KEY }}
+  query: |
+    SELECT * FROM alb_logs limit 10
+  columns:
+    - {name: type, type: string}
+    - {name: time, type: string}
+    - {name: elb, type: string}
+    - {name: client_ip, type: string}
+    - {name: client_port, type: long}
+    - {name: target_ip, type: string}
+    - {name: target_port, type: long}
+    - {name: request_processing_time, type: double}
+    - {name: target_processing_time, type: double}
+    - {name: response_processing_time, type: double}
+out:
+  type: mysql
+  host: {{ env.MYSQL_HOST }}
+  user: {{ env.MYSQL_USER }}
+  password: {{ env.MYSQL_PASSWORD }}
+  database: {{ env.MYSQL_DATABASE }}
+  port: {{ env.MYSQL_PORT }}
+  table: log
+  mode: merge
