@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  embulk:
+    build: .
+    volumes:
+      - .:/work
+    env_file:
+      - .env
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root

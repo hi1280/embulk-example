@@ -2,15 +2,14 @@
 
 ## Usage
 
-build image
+up & build
 
 ```
-$ docker build -t embulk-example .
+$ docker-compose up --build
 ```
 
 run
 
 ```
-$ docker run --rm -it -v $(pwd):/work --env-file .env --network mysql80_default embulk-example run athena2mysql.yml.liquid
+$ docker-compose run embulk run athena2mysql.yml.liquid
 ```
-
